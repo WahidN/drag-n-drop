@@ -4,6 +4,7 @@ class DragAndDrop {
   constructor(element) {
     this.element = element;
     this.fileInput = element.querySelector("input");
+    this.uploadList = element.querySelector(".uploadList");
   }
 
   initEventListeners() {
@@ -71,17 +72,26 @@ class DragAndDrop {
   fileInputOnChange() {
     [...this.fileInput.files].forEach((file) => {
       this.previewFile(file);
+      this.uploadFile();
     });
   }
 
   previewFile(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onloadend = () => {
-      let img = document.createElement("img");
-      img.src = reader.result;
-      this.element.appendChild(img);
+      const item = `
+        <li class="uploadItem">
+          <span>${file.name}</span>
+        </li>
+      `;
+      this.uploadList.insertAdjacentHTML("beforeend", item);
     };
+  }
+
+  uploadFile() {
+    // upload file to server
   }
 }
 
