@@ -5,6 +5,7 @@ class DragAndDrop {
     this.element = element;
     this.fileInput = element.querySelector("input");
     this.uploadList = element.querySelector(".uploadList");
+    this.itemTemplate = document.querySelector('[data-item-template]');
   }
 
   initEventListeners() {
@@ -81,12 +82,11 @@ class DragAndDrop {
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      const item = `
-        <li class="uploadItem">
-          <span>${file.name}</span>
-        </li>
-      `;
-      this.uploadList.insertAdjacentHTML("beforeend", item);
+      const item = this.itemTemplate.content.cloneNode(true).children[0];
+      const title = item.querySelector('[data-title]');
+      title.textContent = file.name;
+      console.log(item);
+      this.uploadList.insertAdjacentHTML("beforeend", item.outerHTML);
     };
   }
 
